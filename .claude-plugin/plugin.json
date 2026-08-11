@@ -1,0 +1,17 @@
+{
+  "name": "agent-workflow",
+  "version": "1.0.0",
+  "description": "Skills, subagents, and safety hooks for everyday engineering work.",
+  "author": {
+    "name": "Robert David Orr"
+  },
+  "homepage": "https://github.com/roborracle/agent-workflow-kit",
+  "repository": "https://github.com/roborracle/agent-workflow-kit",
+  "keywords": [
+    "workflow",
+    "skills",
+    "wordpress",
+    "standards",
+    "code-review"
+  ]
+}

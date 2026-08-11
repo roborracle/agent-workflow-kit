@@ -1,0 +1,32 @@
+{
+  "$comment": [
+    "Copy to ~/.mcp.json and remove the servers you do not need.",
+    "",
+    "Every value that could be a credential is written as ${VAR}. Claude Code expands these from",
+    "your environment at launch. Never paste a literal key into this file — a real key in",
+    "~/.mcp.json is one 'share your screen' away from being someone else's key.",
+    "",
+    "Set the variables in ~/.config/agent-kit/env.sh (scripts/install.sh creates it, chmod 600)",
+    "and source that file from your shell profile.",
+    "",
+    "Servers requiring no key at all are listed first. Start there. Add the rest only when a task",
+    "actually needs them — every enabled server costs context in every session."
+  ],
+  "mcpServers": {
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "browser": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      }
+    }
+  }
+}

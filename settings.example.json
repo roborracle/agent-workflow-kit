@@ -1,0 +1,33 @@
+{
+  "$comment": [
+    "Baseline settings for everyday engineering work.",
+    "scripts/install.sh merges this into ~/.claude/settings.json rather than overwriting it,",
+    "so any personal keys you already have are preserved.",
+    "",
+    "If you installed via the plugin marketplace instead, the plugin wires its own hooks and you",
+    "do not need the PreToolUse block below. Having both is harmless (a denied command is denied",
+    "twice) but redundant.",
+    "",
+    "Deliberately absent: skipDangerousModePermissionPrompt. Permission prompts are the last gate",
+    "before an agent runs something irreversible against a client environment. Turn it off on your",
+    "own machine if you want; it is not the team default."
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "~/.claude/hooks/block-force-push.sh" },
+          { "type": "command", "command": "~/.claude/hooks/block-secret-commit.sh" },
+          { "type": "command", "command": "~/.claude/hooks/block-destructive-ops.sh" }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true
+  },
+  "effortLevel": "high"
+}
