@@ -1,0 +1,34 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Validate the kit
+        run: ./scripts/validate.sh
+
+      - name: Hook behaviour
+        run: ./tests/hooks.test.sh
+
+      - name: Installer runs clean against an empty home
+        env:
+          CLAUDE_CONFIG_DIR: ${{ runner.temp }}/claude-home
+        run: |
+          ./scripts/install.sh --dry-run
+          ./scripts/install.sh
+          test -f "$CLAUDE_CONFIG_DIR/CLAUDE.md"
+          test -d "$CLAUDE_CONFIG_DIR/rules"
+          test -x "$CLAUDE_CONFIG_DIR/hooks/block-force-push.sh"
+          # Second run must be a no-op, not a pile of duplicate work
+          ./scripts/install.sh | tee /tmp/second-run.txt
+          grep -q 'unchanged' /tmp/second-run.txt
