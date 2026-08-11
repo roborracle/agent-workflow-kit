@@ -15,7 +15,7 @@
 
 set -uo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$REPO_ROOT"
+cd "$REPO_ROOT" || exit 1
 
 if [ -t 1 ]; then RED=$'\033[31m'; GRN=$'\033[32m'; BOLD=$'\033[1m'; DIM=$'\033[2m'; OFF=$'\033[0m'
 else RED=""; GRN=""; BOLD=""; DIM=""; OFF=""; fi

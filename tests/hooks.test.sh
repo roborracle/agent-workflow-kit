@@ -69,7 +69,7 @@ echo
 echo "block-secret-commit.sh"
 TMPREPO="$(mktemp -d)"
 (
-  cd "$TMPREPO"
+  cd "$TMPREPO" || exit 1
   git init -q . && git config user.email t@t.t && git config user.name T
 
   # Clean commit

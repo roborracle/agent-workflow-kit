@@ -7,6 +7,11 @@
 #
 # Exit codes: 0 = all good (warnings allowed), 1 = at least one FAIL.
 
+# Tildes in the strings below are display text shown to the reader — "~/.claude/settings.json"
+# is friendlier than the absolute path. They are never expanded or used as paths, so SC2088
+# does not apply.
+# shellcheck disable=SC2088
+
 set -uo pipefail
 
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
