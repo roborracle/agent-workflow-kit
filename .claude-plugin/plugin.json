@@ -1,6 +1,6 @@
 {
   "name": "agent-workflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Skills, subagents, and safety hooks for everyday engineering work.",
   "author": {
     "name": "Robert David Orr"

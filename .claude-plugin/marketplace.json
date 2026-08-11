@@ -6,13 +6,13 @@
   },
   "metadata": {
     "description": "Opinionated engineering workflow: skills, subagents, and safety hooks for Claude Code.",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "plugins": [
     {
       "name": "agent-workflow",
       "description": "Skills, subagents, and safety hooks for everyday engineering work.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Robert David Orr"
       },
