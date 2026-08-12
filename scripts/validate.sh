@@ -12,6 +12,7 @@
 #   6. Shell scripts pass shellcheck, when shellcheck is available
 #   7. No credential-shaped strings anywhere in the repository
 #   8. No client or personal identifiers leaked into a public repository
+#   9. No proprietary skill names — those skills live only in the private companion kit
 
 set -uo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -143,6 +144,22 @@ if [ -n "$LEAKS" ]; then
   printf '%s\n' "$LEAKS" | head -10 | sed 's/^/      /'
 else
   ok "no home paths or personal addresses"
+fi
+
+# ---------------------------------------------------------------- 9. proprietary content
+
+sect "Proprietary content"
+# The private companion kit carries proprietary skills that must never be ported here.
+# Content grep rather than a directory check, so even a docs reference to one trips it.
+PROPRIETARY_NAMES='(semantic-seo-architect|visual-semantic-elements|schema-semantic-expert|algorithmic-authorship)'
+PROP_HITS=$(grep -rInE "$PROPRIETARY_NAMES" . \
+  --exclude-dir=.git --exclude-dir=node_modules \
+  --exclude='validate.sh' 2>/dev/null || true)
+if [ -n "$PROP_HITS" ]; then
+  bad "proprietary skill names found — these belong only in the private companion kit:"
+  printf '%s\n' "$PROP_HITS" | head -10 | sed 's/^/      /'
+else
+  ok "no proprietary skill names"
 fi
 
 # ---------------------------------------------------------------- summary
