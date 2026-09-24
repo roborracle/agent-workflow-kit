@@ -8,14 +8,6 @@ user-invocable: false
 
 Holistic design system expertise combining premium UX patterns, brand consistency, visual storytelling, and delightful interactions.
 
-## Core Capabilities
-
-1. **Premium UX Design**: Sophisticated interaction patterns, premium visual hierarchy, refined micro-animations
-2. **Brand Guardian**: Color palette enforcement, typography adherence, voice/tone consistency
-3. **Visual Storytelling**: Hero sections that captivate, data visualization, progressive disclosure
-4. **Design Review**: Visual/UX/Brand/Technical review phases
-5. **Delightful Micro-Interactions**: Button hover states, loading states, success celebrations
-
 ## Design System Components
 
 ### Typography Scale
@@ -63,9 +55,10 @@ Holistic design system expertise combining premium UX patterns, brand consistenc
 
 ## Anti-Patterns to Avoid
 - Generic stock photography
-- Overused gradient combinations
+- Purple-to-blue hero gradients
 - Excessive animation
 - Inconsistent iconography
 - Typography without hierarchy
 - Colors that don't serve purpose
 - Decoration without function
+- Defaults a model falls back on without direction: a cream or beige page background, italic accent words inside headlines, numbered "01 / 02 / 03" section labels, monospace eyebrow labels, pill-shaped buttons. Add whatever default style the first draft used.

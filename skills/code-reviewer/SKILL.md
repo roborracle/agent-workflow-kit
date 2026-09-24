@@ -13,15 +13,15 @@ Comprehensive code review following "Security-First, Performance-Second" princip
 
 ## Review Phases
 
-### Phase 1: Security Audit (OWASP Top 10)
-- SQL Injection and parameterized queries
-- Cross-Site Scripting (XSS) vulnerabilities
+### Phase 1: Security Audit (OWASP Top 10, current edition)
+- Broken access control, including insecure direct object references
+- Injection: SQL (parameterized queries), XSS, command injection
+- Cryptographic failures and sensitive data exposure
 - Authentication and session management flaws
-- Insecure direct object references
 - Security misconfiguration
-- Sensitive data exposure
-- Missing access controls
-- CSRF vulnerabilities
+- Vulnerable or outdated dependencies
+- Server-side request forgery (SSRF)
+- CSRF on state-changing requests
 
 ### Phase 2: Logic and Correctness
 - Algorithm correctness and efficiency

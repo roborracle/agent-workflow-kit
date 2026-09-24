@@ -25,13 +25,15 @@ Target: > 70% efficiency
 | Repeated bugs | Inadequate testing | Test automation |
 
 ## Common Automations
-| Task | Tool | Time Saved |
-|------|------|------------|
-| Code formatting | Prettier/Black | 30 min/week |
-| Linting | ESLint/Ruff | 1 hr/week |
-| Testing | Jest/Pytest + CI | 2 hrs/week |
-| Deployment | GitHub Actions | 3 hrs/week |
-| Dependency updates | Dependabot/Renovate | 2 hrs/month |
+| Task | Tool |
+|------|------|
+| Code formatting | Prettier/Black |
+| Linting | ESLint/Ruff |
+| Testing | Jest/Pytest + CI |
+| Deployment | GitHub Actions |
+| Dependency updates | Dependabot/Renovate |
+
+Estimate time saved from the team's own numbers, not generic figures.
 
 ## Developer Productivity Metrics
 | Metric | Target |

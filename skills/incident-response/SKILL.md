@@ -34,13 +34,13 @@ Was there a recent deployment?
 └── No → Fix forward (investigate root cause)
 ```
 
-**Rollback command:**
+**Rollback:** revert the deploy, not just the newest commit. `git revert HEAD` undoes one commit and fails outright on a merge commit.
 ```bash
-# Revert to last known good
-git checkout prod
-git revert HEAD
-git push origin prod
-# Deploy the reverted version
+git checkout prod && git pull
+git log --oneline --first-parent -5          # find the deploy's commit(s)
+git revert -m 1 <merge-sha>                  # deploy landed as a merge commit
+# or: git revert --no-edit <last-good-sha>..HEAD   # deploy was several plain commits
+git push origin prod                         # confirm with the user first: this redeploys production
 ```
 
 ### Phase 3: Mitigate

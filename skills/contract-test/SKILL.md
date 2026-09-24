@@ -55,8 +55,8 @@ test('GET /users/:id returns valid response shape', async () => {
 ### Timeline
 ```
 Week 0:  Add deprecation header + docs
-         Sunset-Deprecation: true
-         Sunset: {SUNSET_DATE}
+         Deprecation: @{DEPRECATION_UNIX_SECONDS}
+         Sunset: {SUNSET_HTTP_DATE}
 
 Week 1-4: Monitor usage of deprecated endpoint/field
           Log warnings when deprecated features are accessed
@@ -69,8 +69,10 @@ Week 8:  Remove deprecated feature (or extend if consumers remain)
 ### Deprecation Header Pattern
 ```typescript
 // Add to deprecated endpoints
-res.setHeader('Deprecation', 'true');
-res.setHeader('Sunset', '{SUNSET_DATE}');
+// RFC 9745: Deprecation is a structured-field Date (@ + Unix seconds).
+// RFC 8594: Sunset is an HTTP-date and must not be earlier than Deprecation.
+res.setHeader('Deprecation', '@{DEPRECATION_UNIX_SECONDS}');
+res.setHeader('Sunset', '{SUNSET_HTTP_DATE}'); // e.g. 'Wed, 30 Jun 2027 23:59:59 GMT'
 res.setHeader('Link', '</api/v2/users>; rel="successor-version"');
 ```
 

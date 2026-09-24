@@ -58,7 +58,7 @@ Three states: CLOSED (normal) → OPEN (reject all) → HALF-OPEN (probe). Open 
 Read `x-ratelimit-remaining` and `x-ratelimit-reset` headers. On 429, respect `Retry-After`. See [reference/integration-patterns.md](reference/integration-patterns.md).
 
 ### Idempotency Keys
-For non-idempotent operations, include `Idempotency-Key: {userId}-{operationId}-{timestamp}` header.
+For non-idempotent operations, send an `Idempotency-Key` header generated once per logical operation (e.g. a UUID stored with the pending operation) and reused unchanged on every retry. A key that includes a timestamp changes between retries and defeats deduplication.
 
 ## Error Mapping
 ```typescript

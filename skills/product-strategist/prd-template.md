@@ -134,7 +134,7 @@
 - Time to Interactive: <2s
 - First Contentful Paint: <1s
 - Bundle Size: <500KB initial
-- API Response (p95): <100ms
+- API Response (p95): <200ms (the kit quality gate; tighten per product if needed)
 
 ### Security
 - HTTPS everywhere

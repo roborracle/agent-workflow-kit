@@ -22,7 +22,7 @@ Generate 2-3 fundamentally different approaches. For each:
 - Core idea (1 sentence)
 - Implementation (real code, not pseudocode)
 - Big-O complexity
-- Fatal flaw (there's always one)
+- Fatal flaw, if one exists (say so plainly when none does)
 - When it wins / when it loses
 
 ## Phase 3: Peer Review
@@ -38,8 +38,7 @@ Recommend with evidence, acknowledge uncertainty:
 - "Smarter approach might be [alternative]"
 
 ## Phase 5: Implementation
-Implement on a branch: `scrutinize/[task]-[solution-chosen]`
-Include decision log as comments. Add TODO for identified weaknesses.
+If the user picks an approach, build it under the normal git workflow (issue first, `feature/` branch). Record the decision and the rejected alternatives in the issue or PR body, and add a TODO only for a weakness you are knowingly leaving in.
 
 ## Escape Hatches
 - If obvious solution exists: State it, explain why scrutiny adds no value

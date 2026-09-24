@@ -22,13 +22,16 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - run: npm ci
       - name: Run tests
         run: npm test
   build:
     needs: test
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
+      - run: npm ci
       - name: Build
         run: npm run build
   deploy:
@@ -36,18 +39,19 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
       - name: Deploy
         run: ./deploy.sh
 ```
 
 ## Dockerfile Best Practices
 ```dockerfile
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
-FROM node:20-alpine
+FROM node:24-alpine
 WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY . .

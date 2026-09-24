@@ -61,7 +61,6 @@ Define as CSS custom properties:
 
 ## Performance Targets
 - LCP < 2.5s
-- FID < 100ms
 - CLS < 0.1
 - INP < 200ms
 - JS bundle < 100KB gzipped

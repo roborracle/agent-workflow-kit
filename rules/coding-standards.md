@@ -23,4 +23,4 @@ alwaysApply: true
 
 ## Required
 - Error handling on all external calls. Input validation at boundaries. Try/catch on I/O.
-- KISS, YAGNI, DRY. Industry standard libraries first. No mocks, placeholders, or omitted code.
+- KISS, YAGNI, DRY. Industry standard libraries first. No placeholders or omitted code; mocks belong in tests, at external boundaries.

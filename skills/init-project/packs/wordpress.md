@@ -1,6 +1,10 @@
+---
 description: WordPress theme/plugin development conventions, deployment, and security.
-globs: ["**/*.php", "**/*.css", "**/*.js"]
-alwaysApply: false
+paths:
+  - "**/*.php"
+  - "**/*.css"
+  - "**/*.js"
+---
 
 # WordPress Conventions
 
@@ -23,7 +27,7 @@ alwaysApply: false
 - No scattered documentation — use /docs
 - No hardcoded domains
 
-## Deployment (Cloudways)
+## Deployment
 1. Never deploy directly to production
 2. Always test on staging first
 3. Always create backup before deployment

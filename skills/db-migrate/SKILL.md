@@ -21,7 +21,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob
 | Type | Risk | Pattern |
 |------|------|---------|
 | Add column (nullable) | Low | Direct ALTER |
-| Add column (NOT NULL + default) | Medium | Add nullable → backfill → set NOT NULL |
+| Add column (NOT NULL + constant default) | Low | Direct ALTER on Postgres 11+ / MySQL 8.0+ (metadata-only); on older engines or volatile defaults: add nullable → backfill → set NOT NULL |
 | Remove column | High | Expand-contract (stop reading → deploy → drop) |
 | Rename column | High | Add new → copy data → update code → drop old |
 | Change column type | High | Add new column → backfill with cast → swap |
@@ -40,10 +40,11 @@ ALTER TABLE users ADD COLUMN full_name VARCHAR(255);
 
 **Phase 2 — Migrate** (backfill data)
 ```sql
--- Batch update to avoid table locks
+-- Batch update to avoid long locks (Postgres has no UPDATE ... LIMIT; select the batch by key)
 UPDATE users SET full_name = first_name || ' ' || last_name
-WHERE full_name IS NULL
-LIMIT 1000;
+WHERE id IN (
+  SELECT id FROM users WHERE full_name IS NULL ORDER BY id LIMIT 1000
+);
 ```
 
 **Phase 3 — Transition** (code reads new, writes both)
@@ -80,7 +81,7 @@ ALTER TABLE users DROP COLUMN first_name, DROP COLUMN last_name;
 - [ ] Rollback migration tested
 - [ ] No full table locks on tables with >100K rows
 - [ ] Indexes created CONCURRENTLY where supported
-- [ ] Default values set at application level, not database level (for large tables)
+- [ ] Constant defaults use the engine's metadata-only ADD COLUMN path; volatile defaults (e.g. `now()`, `random()`) on large tables are backfilled in batches
 - [ ] Verified on staging with production-sized dataset
 - [ ] Backup confirmed before execution
 
@@ -92,6 +93,6 @@ ALTER TABLE users DROP COLUMN first_name, DROP COLUMN last_name;
 - Assuming migration duration from dev dataset size
 
 ### Data Migration Patterns
-- **Backfill**: Batch updates with LIMIT/OFFSET, sleep between batches
+- **Backfill**: Batch updates keyed on the primary key (keyset, not OFFSET), sleep between batches
 - **Transform**: ETL pipeline with progress tracking and resumability
 - **Seed**: Idempotent INSERT ... ON CONFLICT DO NOTHING

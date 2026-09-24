@@ -28,8 +28,10 @@ async function getAccessToken(): Promise<string> {
 
 ```typescript
 function verifyWebhookSignature(payload: string, signature: string, secret: string): boolean {
-  const expected = crypto.createHmac('sha256', secret).update(payload).digest('hex');
-  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
+  const expected = Buffer.from(crypto.createHmac('sha256', secret).update(payload).digest('hex'));
+  const received = Buffer.from(signature);
+  // timingSafeEqual throws on unequal lengths; treat that as a mismatch
+  return received.length === expected.length && crypto.timingSafeEqual(received, expected);
 }
 ```
 
@@ -59,16 +61,21 @@ if (remaining === 0) {
   await sleep(waitMs);
 }
 
-// On 429: respect Retry-After header
+// On 429: respect Retry-After (RFC 9110: delay-seconds OR an HTTP-date)
 if (response.status === 429) {
-  const retryAfter = parseInt(response.headers['retry-after']) * 1000;
-  await sleep(retryAfter);
+  const header = response.headers['retry-after'] ?? '';
+  const seconds = Number(header);
+  const retryAfterMs = Number.isFinite(seconds) && header.trim() !== ''
+    ? seconds * 1000
+    : Math.max(0, Date.parse(header) - Date.now()) || 1000; // fallback when absent or unparseable
+  await sleep(retryAfterMs);
 }
 ```
 
 ## Idempotency Keys
 
-For non-idempotent operations (POST, payment processing):
+For non-idempotent operations (POST, payment processing), generate the key once per logical operation and reuse it on every retry:
 ```typescript
-headers: { 'Idempotency-Key': `${userId}-${operationId}-${timestamp}` }
+const idempotencyKey = pendingOperation.idempotencyKey ?? crypto.randomUUID(); // persist with the operation
+headers: { 'Idempotency-Key': idempotencyKey }
 ```

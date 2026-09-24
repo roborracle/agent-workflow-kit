@@ -52,7 +52,7 @@ Update version in all relevant files:
 npm version $VERSION --no-git-tag-version
 
 # pyproject.toml
-sed -i.bak "s/^version = .*/version = \"$VERSION\"/" pyproject.toml
+sed -i.bak "s/^version = .*/version = \"$VERSION\"/" pyproject.toml && rm pyproject.toml.bak
 ```
 
 ### 4. Finalize Changelog
@@ -60,26 +60,26 @@ Replace `[Unreleased]` with `[$VERSION] - YYYY-MM-DD` and add a new empty `[Unre
 
 ### 5. Commit and Tag
 ```bash
-git add -A
-git commit -m "release: v$VERSION"
+# Stage only the release files; `git add -A` would sweep in stray files
+git add CHANGELOG.md
+git add package.json package-lock.json pyproject.toml 2>/dev/null || true
+git commit -m "chore(release): v$VERSION"
 git tag -a "v$VERSION" -m "Release v$VERSION"
-git push origin main --tags
+git push origin main --follow-tags
 ```
 
 ### 6. Create GitHub Release
 ```bash
+# Extract this version's section from CHANGELOG.md as the release notes
+awk -v v="$VERSION" '$0 ~ "^## \\[" v "\\]" {f=1; next} /^## \[/ {f=0} f' CHANGELOG.md > "release-notes-$VERSION.md"
 gh release create "v$VERSION" \
   --title "v$VERSION" \
-  --notes "$(changelog_content)"
+  --notes-file "release-notes-$VERSION.md"
+rm "release-notes-$VERSION.md"
 ```
 
-### 7. Production Merge
-```bash
-git checkout prod
-git merge main
-git push origin prod
-git checkout main
-```
+### 7. Production Promotion
+Pushing to `prod` is a deploy: confirm with the user before this step. `main` carries docs, tests, and debug tooling that `prod` must not, so a plain `git merge main` defeats the sanitized-`prod` rule. Promote with the project's documented process (a promotion script, a `.deployignore`, or a release branch that strips dev-only paths). If the project documents none, stop and ask how `prod` is sanitized instead of merging.
 
 ### 8. Post-Release Verification
 - Confirm tag exists on remote
@@ -92,4 +92,4 @@ git checkout main
 - Never release without tests passing
 - Never skip the changelog
 - Always tag before pushing
-- Always return to `main` branch after prod merge
+- Always return to `main` branch after prod promotion

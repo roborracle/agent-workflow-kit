@@ -40,54 +40,24 @@ fi
 Only install ONE framework pack per project.
 
 ## 4. Create Project CLAUDE.md
-Create `.claude/CLAUDE.md`:
-```markdown
-# Project: [NAME]
-
-## Overview
-[One paragraph describing what this project is]
-
-## Tech Stack
-[Primary technologies, frameworks, versions]
-
-## Architecture
-[Key architectural decisions, folder structure patterns]
-
-## Development
-- Dev server: [command]
-- Build: [command]
-- Test: [command]
-- Deploy: [command]
-
-## Project-Specific Rules
-[Anything unique to THIS project not covered by global rules]
-```
+Create `.claude/CLAUDE.md` from the template in `~/.claude/rules/documentation-protocol.md` § "Project `CLAUDE.md` template": a thin reference layer holding only this project's deltas (paths, context, stack, overrides, pointers to deeper docs).
 
 ## 5. Add to .gitignore
 Ensure `.claude/settings.local.json` is in `.gitignore`.
 
 ## 6. Project-Level Rules
-Only add rules for things NOT covered by the 7 global rules:
-- git-workflow.md
-- coding-standards.md
-- testing-quality.md
-- security.md
-- code-cleanup-safety.md
-- cache-protocols.md
-- web-dev-fundamentals.md
+Only add rules for things the global rules don't already cover. List `~/.claude/rules/` to see the current set.
 
 ## 7. Offer PRD Scaffolding
 Ask the user if they want a PRD template created. If yes:
 ```bash
-mkdir -p docs
-cp ~/.claude/skills/product-strategist/prd-template.md docs/PRD.md
-echo "Created docs/PRD.md — fill in project-specific details"
+mkdir -p docs/strategy
+cp ~/.claude/skills/product-strategist/prd-template.md docs/strategy/prd.md
+echo "Created docs/strategy/prd.md — fill in project-specific details"
 ```
 
-## 8. Clean Up Legacy Config
-```bash
-rm -rf .claude/agents/ .claude/commands/ 2>/dev/null
-```
+## 8. Check Existing Config
+If `.claude/agents/` or `.claude/commands/` exist, list what's in them and leave them in place. Project subagents and commands are current Claude Code features, and removing either is a deletion the user confirms first.
 
 ## 9. Verify
 ```bash

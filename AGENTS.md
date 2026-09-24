@@ -1,7 +1,7 @@
 <!-- GENERATED FILE — do not edit by hand.
      Source: CLAUDE.md + rules/*.md
      Regenerate: ./scripts/sync-agents-md.sh
-     digest: f7874a7a7dc7a79e
+     digest: 3631f66d58dd43c3
 -->
 
 # AGENTS.md — Engineering Standards
@@ -10,8 +10,8 @@ This file is for assistants that read a single instruction file: Codex, Gemini C
 most others. It contains the same standards Claude Code loads from `CLAUDE.md` plus `rules/`,
 with every rule inlined because there is no on-demand loading here.
 
-If you are Claude Code, read `CLAUDE.md` instead — it is shorter and the rules load only when
-relevant.
+If you are Claude Code, read `CLAUDE.md` instead — Claude Code loads `rules/` alongside it,
+so the inlined copy below is redundant there.
 
 ---
 
@@ -21,8 +21,8 @@ A general-purpose operating standard for software work. This file is loaded into
 session. Project-level `CLAUDE.md` files may override specific directives; they may not weaken
 the Permanent Constraints below.
 
-Detailed rules live in `rules/` and load on demand. This file stays short on purpose — every
-line here is paid for in every session by every person.
+Detailed rules live in `rules/`. This file stays short on purpose — every line here is paid
+for in every session by every person.
 
 ---
 
@@ -65,12 +65,13 @@ Touch only what the task requires. Scope creep in a task becomes scope creep in 
 context clean. One task per subagent. On genuinely hard problems, spend more compute, not more
 guesses.
 
-**Plan before building.** Use plan mode for anything with 3+ steps or an architectural decision.
-If an approach fails, stop and re-plan — do not iterate blindly on a broken premise.
+**Plan before building.** Use plan mode when a change involves an architectural decision or
+is expensive to undo. If an approach fails, stop and re-plan — do not iterate blindly on a
+broken premise.
 
-**Extended thinking on durable decisions.** Architecture, performance trade-offs, database
-design, anything expensive to reverse: reason it through before writing code. Surface the
-non-obvious trade-offs. Name the assumptions that break at scale. Recommendation comes last.
+**Durable decisions.** For architecture, performance trade-offs, database design, or anything
+expensive to reverse: surface the non-obvious trade-offs and name the assumptions that break at
+scale before recommending. The recommendation comes last.
 
 **Autonomous execution.** Own the task end to end. Resolve ordinary errors without escalating.
 The goal is zero context-switching for the person who asked.
@@ -134,13 +135,16 @@ alwaysApply: true
 
 ### Invalidation Triggers
 
-Events that MUST trigger cache clearing:
+Clear the cache layers a change touches when that change could be served stale:
 - Configuration change (.env, config/ files modified)
 - Dependency update (package.json, composer.json, requirements.txt modified)
 - Build process modification (webpack/vite config, artisan changes)
 - Database schema change (new migration executed)
-- Pre-testing (before any formal test suite)
-- Task finalization (before marking a task complete)
+- Before a test run whose result could come from a stale cache
+
+The machine-wide commands below — `docker system prune -a --force`, `npm cache clean --force`,
+`pip cache purge`, `redis-cli FLUSHALL` — delete state outside this project, so they fall under
+confirmation gate 2 in `rules/decision-boundaries.md`.
 
 ### Playbooks by Stack
 
@@ -279,7 +283,7 @@ alwaysApply: true
 
 ### Required
 - Error handling on all external calls. Input validation at boundaries. Try/catch on I/O.
-- KISS, YAGNI, DRY. Industry standard libraries first. No mocks, placeholders, or omitted code.
+- KISS, YAGNI, DRY. Industry standard libraries first. No placeholders or omitted code; mocks belong in tests, at external boundaries.
 
 ---
 
@@ -498,13 +502,13 @@ Before any MCP tool call (or any other action) that sends, posts, publishes, sch
 
 ### Covered surfaces (non-exhaustive)
 
-- **Slack** — `slack_send_message`, `slack_schedule_message`, `slack_add_reaction`, `slack_create_canvas`, `slack_update_canvas`, `slack_send_message_draft`
-- **Gmail** — any send/reply/forward action
-- **Google Calendar** — `create_event`, `update_event`, `delete_event`, `respond_to_event`
-- **Google Drive** — `create_file`, `copy_file`, sharing permission changes
-- **Asana** — `create_tasks`, `update_tasks`, `add_comment`, `create_project_*`, status updates
-- **Canva** — `comment-on-design`, `export-design`, `commit-editing-transaction`, `request-outline-review`, anything that publishes
-- **Figma** — `add_code_connect_map`, `send_code_connect_mappings`, `upload_assets`, `create_new_file` if it writes to a shared Figma team
+Tool names change as MCP servers update, so match on what a call does, not on its name.
+
+- **Messaging** (Slack, email): sending, scheduling, replying, forwarding, reacting, drafting into a shared space, creating or editing canvases.
+- **Calendars**: creating, updating, deleting, or responding to events.
+- **File stores** (Google Drive and similar): creating or copying files and changing sharing permissions.
+- **Project management** (Asana and similar): creating or updating tasks and projects, commenting, posting status updates.
+- **Design tools** (Canva, Figma): commenting, exporting, publishing, committing edits, uploading assets, or creating files in a shared team.
 - **Any new MCP tool** that creates state outside this conversation — default to gated unless its description is explicitly read-only.
 
 ### What does NOT trigger the gate
@@ -624,7 +628,7 @@ Before dispatching multiple agents, classify the work:
 - Dependent → sequence it, one worker.
 - Trivial — single file, under thirty minutes → no subagent, just do it.
 
-Parallelism overhead is real. When in doubt, ask first.
+Parallelism overhead is real. When the classification is unclear, run the work sequentially — it is always safe — rather than stopping to ask (see `rules/decision-boundaries.md`: tactical choices don't need confirmation).
 
 **If two or more agents will run `git add` / `git commit` / `git branch`, they must be isolated
 in separate worktrees or dispatched sequentially.** Concurrent agents in one working directory
@@ -848,4 +852,4 @@ returned 0. A suspiciously fast build is the tell.
 
 ---
 
-<!-- end generated content · digest: f7874a7a7dc7a79e -->
+<!-- end generated content · digest: 3631f66d58dd43c3 -->

@@ -6,20 +6,22 @@ disable-model-invocation: true
 
 # State Machine Diagram Creator
 
-Create authoritative, read-only FSM documentation for complex systems.
+Create authoritative, review-protected FSM documentation for complex systems.
 
 ## Process Overview
 
 ```
   1. EXPLORE          2. IDENTIFY         3. DIAGRAM          4. PROTECT
   ───────────         ──────────          ────────            ────────
-  Search codebase     Find all states     Create ASCII        chmod 444
-  for state usage     and transitions     art diagrams        (read-only)
+  Search codebase     Find all states     Create ASCII        Require review
+  for state usage     and transitions     art diagrams        (CODEOWNERS)
 ```
 
 ## Step 1: Explore the Codebase
 
 ### Search Patterns
+
+These examples assume TypeScript and Prisma. Swap in the project's language, file extensions, and ORM schema file.
 
 ```bash
 # Find state/status enums
@@ -28,7 +30,7 @@ grep -r "enum.*State" --include="*.ts"
 
 # Find state transitions
 grep -r "status:" --include="*.ts" | grep -E "(PENDING|QUEUED|ACTIVE)"
-grep -r "\.update\(" --include="*.ts" | grep status
+grep -rE "\.update\(" --include="*.ts" | grep status
 
 # Find queue/job definitions
 grep -r "Queue\|Worker\|Job" --include="*.ts"
@@ -228,11 +230,9 @@ These rules MUST NEVER be violated:
 | API | app/api/route.ts | 20-80 |
 ```
 
-### Make Read-Only
+### Protect the Document
 
-```bash
-chmod 444 docs/ARCHITECTURE_FSM.md
-```
+Git does not track read-only permissions, so `chmod 444` only affects your own checkout. To keep the diagram from drifting, add it to `CODEOWNERS` (or the repo's review rule) so every change needs review, and update it in the same PR as any state-machine change.
 
 ## Validation Checklist
 
@@ -243,5 +243,5 @@ chmod 444 docs/ARCHITECTURE_FSM.md
 - [ ] Time constants have file:line references
 - [ ] Error codes have recovery actions
 - [ ] Invariants are explicitly stated
-- [ ] File is set to read-only (chmod 444)
+- [ ] Document is covered by CODEOWNERS or an equivalent review rule
 - [ ] Document version and date are set

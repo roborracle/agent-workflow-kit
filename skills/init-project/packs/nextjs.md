@@ -1,6 +1,11 @@
+---
 description: Next.js App Router, React, and Tailwind CSS conventions for Next.js projects.
-globs: ["**/*.tsx", "**/*.ts", "**/*.jsx", "**/*.css"]
-alwaysApply: false
+paths:
+  - "**/*.tsx"
+  - "**/*.ts"
+  - "**/*.jsx"
+  - "**/*.css"
+---
 
 # Next.js Conventions
 

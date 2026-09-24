@@ -14,13 +14,13 @@ Before any MCP tool call (or any other action) that sends, posts, publishes, sch
 
 ## Covered surfaces (non-exhaustive)
 
-- **Slack** — `slack_send_message`, `slack_schedule_message`, `slack_add_reaction`, `slack_create_canvas`, `slack_update_canvas`, `slack_send_message_draft`
-- **Gmail** — any send/reply/forward action
-- **Google Calendar** — `create_event`, `update_event`, `delete_event`, `respond_to_event`
-- **Google Drive** — `create_file`, `copy_file`, sharing permission changes
-- **Asana** — `create_tasks`, `update_tasks`, `add_comment`, `create_project_*`, status updates
-- **Canva** — `comment-on-design`, `export-design`, `commit-editing-transaction`, `request-outline-review`, anything that publishes
-- **Figma** — `add_code_connect_map`, `send_code_connect_mappings`, `upload_assets`, `create_new_file` if it writes to a shared Figma team
+Tool names change as MCP servers update, so match on what a call does, not on its name.
+
+- **Messaging** (Slack, email): sending, scheduling, replying, forwarding, reacting, drafting into a shared space, creating or editing canvases.
+- **Calendars**: creating, updating, deleting, or responding to events.
+- **File stores** (Google Drive and similar): creating or copying files and changing sharing permissions.
+- **Project management** (Asana and similar): creating or updating tasks and projects, commenting, posting status updates.
+- **Design tools** (Canva, Figma): commenting, exporting, publishing, committing edits, uploading assets, or creating files in a shared team.
 - **Any new MCP tool** that creates state outside this conversation — default to gated unless its description is explicitly read-only.
 
 ## What does NOT trigger the gate

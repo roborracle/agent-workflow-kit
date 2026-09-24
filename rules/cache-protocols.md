@@ -8,13 +8,16 @@ alwaysApply: true
 
 ## Invalidation Triggers
 
-Events that MUST trigger cache clearing:
+Clear the cache layers a change touches when that change could be served stale:
 - Configuration change (.env, config/ files modified)
 - Dependency update (package.json, composer.json, requirements.txt modified)
 - Build process modification (webpack/vite config, artisan changes)
 - Database schema change (new migration executed)
-- Pre-testing (before any formal test suite)
-- Task finalization (before marking a task complete)
+- Before a test run whose result could come from a stale cache
+
+The machine-wide commands below — `docker system prune -a --force`, `npm cache clean --force`,
+`pip cache purge`, `redis-cli FLUSHALL` — delete state outside this project, so they fall under
+confirmation gate 2 in `rules/decision-boundaries.md`.
 
 ## Playbooks by Stack
 

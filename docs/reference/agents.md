@@ -28,7 +28,7 @@ pre-deploy checks.
 edit the code it's auditing will quietly fix what it finds and report clean, and you lose the
 finding along with any record that it existed.
 
-Runs on the strongest model available. Memory is scoped to the user, so vulnerability patterns
+Runs on Opus (pinned in its frontmatter). Memory is scoped to the user, so vulnerability patterns
 carry across projects.
 
 ## `test-writer`

@@ -13,7 +13,7 @@ Transform market signals and user feedback into actionable insights.
 ## Market Sizing (TAM/SAM/SOM)
 - **TAM**: Total Addressable Market (everyone who could)
 - **SAM**: Serviceable Addressable Market (within your reach)
-- **SOM**: Serviceable Obtainable Market (realistic capture, typically 1-5% year 1)
+- **SOM**: Serviceable Obtainable Market (realistic capture; derive it from comparable companies' traction and your go-to-market capacity, and state that basis)
 
 ## Competitive Analysis Matrix
 ```markdown
