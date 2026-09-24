@@ -27,13 +27,8 @@ Comprehensive test automation covering unit, integration, and E2E testing.
 ### Decision Tree
 ```
 Static HTML? → Read HTML for selectors → Write script
-Dynamic? → Server running? → No → Use with_server.py helper
-                           → Yes → Navigate + wait networkidle → Screenshot → Identify selectors → Execute
-```
-
-### Using with_server.py
-```bash
-python scripts/with_server.py --server "npm run dev" --port 5173 -- python test.py
+Dynamic? → Server running? → No → Start it in the background (e.g. `npm run dev &`) and wait for its port
+                           → Yes → Navigate → wait for the content under test → Screenshot → Identify selectors → Execute
 ```
 
 ### Template
@@ -44,7 +39,7 @@ with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     page = browser.new_page()
     page.goto('http://localhost:5173')
-    page.wait_for_load_state('networkidle')  # CRITICAL
+    page.get_by_role('main').wait_for()  # wait on the content under test, not 'networkidle'
     # ... test logic
     browser.close()
 ```
@@ -56,10 +51,9 @@ with sync_playwright() as p:
 4. Fix: Preserve original intent, update expectations only for legitimate changes, never weaken tests to pass
 
 ## Common Pitfalls
-- **Don't** inspect DOM before `networkidle` on dynamic apps
+- **Don't** inspect the DOM of a dynamic app before the content you need has rendered. Wait on that element (`expect(locator).to_be_visible()`), not on `networkidle`, which Playwright's docs discourage for tests
 - **Don't** use flaky selectors that change
 - **Do** use descriptive selectors: `text=`, `role=`, IDs
-- **Do** wait for `page.wait_for_load_state('networkidle')`
 
 ## Quality Gates
 - All tests passing before merge

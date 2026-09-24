@@ -55,8 +55,9 @@ Scan for violations:
 grep -rn --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.py" --include="*.go" --include="*.rs" \
   -E "console\.(log|debug|info|warn|error)|debugger" src/ 2>/dev/null || echo "None found"
 grep -rn --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.py" --include="*.go" --include="*.rs" \
-  -E "(TODO|FIXME|NOTE|HACK|XXX):" src/ 2>/dev/null || echo "None found"
-find src/ -name "*.test.*" -o -name "*.spec.*" 2>/dev/null || echo "None found"
+  -E "(TODO|FIXME|HACK|XXX):" src/ 2>/dev/null || echo "None found"
+# Not violations on their own: list colocated tests so you can confirm the build excludes them
+find src/ \( -name "*.test.*" -o -name "*.spec.*" \) 2>/dev/null
 ```
 
 ### Phase 5: Branch Hygiene

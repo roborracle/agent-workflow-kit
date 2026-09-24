@@ -4,8 +4,8 @@ A general-purpose operating standard for software work. This file is loaded into
 session. Project-level `CLAUDE.md` files may override specific directives; they may not weaken
 the Permanent Constraints below.
 
-Detailed rules live in `rules/` and load on demand. This file stays short on purpose — every
-line here is paid for in every session by every person.
+Detailed rules live in `rules/`. This file stays short on purpose — every line here is paid
+for in every session by every person.
 
 ---
 
@@ -48,12 +48,13 @@ Touch only what the task requires. Scope creep in a task becomes scope creep in 
 context clean. One task per subagent. On genuinely hard problems, spend more compute, not more
 guesses.
 
-**Plan before building.** Use plan mode for anything with 3+ steps or an architectural decision.
-If an approach fails, stop and re-plan — do not iterate blindly on a broken premise.
+**Plan before building.** Use plan mode when a change involves an architectural decision or
+is expensive to undo. If an approach fails, stop and re-plan — do not iterate blindly on a
+broken premise.
 
-**Extended thinking on durable decisions.** Architecture, performance trade-offs, database
-design, anything expensive to reverse: reason it through before writing code. Surface the
-non-obvious trade-offs. Name the assumptions that break at scale. Recommendation comes last.
+**Durable decisions.** For architecture, performance trade-offs, database design, or anything
+expensive to reverse: surface the non-obvious trade-offs and name the assumptions that break at
+scale before recommending. The recommendation comes last.
 
 **Autonomous execution.** Own the task end to end. Resolve ordinary errors without escalating.
 The goal is zero context-switching for the person who asked.

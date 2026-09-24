@@ -90,7 +90,7 @@ Before dispatching multiple agents, classify the work:
 - Dependent → sequence it, one worker.
 - Trivial — single file, under thirty minutes → no subagent, just do it.
 
-Parallelism overhead is real. When in doubt, ask first.
+Parallelism overhead is real. When the classification is unclear, run the work sequentially — it is always safe — rather than stopping to ask (see `rules/decision-boundaries.md`: tactical choices don't need confirmation).
 
 **If two or more agents will run `git add` / `git commit` / `git branch`, they must be isolated
 in separate worktrees or dispatched sequentially.** Concurrent agents in one working directory

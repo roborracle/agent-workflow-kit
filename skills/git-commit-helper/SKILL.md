@@ -38,7 +38,7 @@ Create clear, detailed commit messages following Conventional Commits specificat
 3. Analyze: What changed? Why? Impact on users? Breaking changes? Related issues?
 
 ## Message Guidelines
-- Subject line under 50 characters
+- Subject line ≤72 characters (soft limit, per rules/git-workflow.md); shorter is better when it still says what changed
 - Use imperative mood ("Add feature" not "Added feature")
 - Separate subject from body with blank line
 - Wrap body at 72 characters

@@ -11,7 +11,7 @@ argument-hint: [what-you're-stuck-on]
 
 ---
 
-## STOP ITERATING. THINK DIFFERENT ARCHITECTURE.
+## Stop iterating on the current approach. Rethink its architecture.
 
 ### Step 1: Autopsy the Current Approach
 - What's actually failing? (Be specific — error message, behavior, symptom)

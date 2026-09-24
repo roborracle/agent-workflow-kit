@@ -13,21 +13,9 @@ Build functional prototypes and MVPs at maximum velocity without sacrificing qua
 - Functional > Feature-complete
 - Validated > Assumed
 
-## Tech Stack Selection (Speed Priority)
+## Tech Stack Selection
 
-### Web
-| Stack | Time to MVP | Best For |
-|-------|-------------|----------|
-| Next.js + Vercel | 1-2 days | Full-stack web apps |
-| Remix + Fly.io | 1-2 days | Data-heavy apps |
-| Astro | < 1 day | Content sites |
-
-### Backend Services
-| Stack | Time to MVP | Best For |
-|-------|-------------|----------|
-| Supabase | Hours | Auth + DB + API |
-| Firebase | Hours | Real-time + Auth |
-| PocketBase | Hours | Self-hosted simple |
+Use the project's defined stack when it has one. For a greenfield prototype with no stack set, default to Next.js on Vercel with Supabase for auth, database, and API, and say why if the prototype calls for something else (a content-only site, self-hosting, real-time sync).
 
 ## MVP Feature Checklist
 

@@ -56,14 +56,11 @@ Incorporate all CRITICAL and WARNING items before proceeding.
 
 ```bash
 gh auth status && gh repo view
+gh label list --limit 200
 
-# Create labels
-for label in feat fix refactor test docs config spike chore perf; do
-  gh label create "type/$label" --force 2>/dev/null
-done
-for p in critical high medium low; do
-  gh label create "priority/$p" --force 2>/dev/null
-done
+# Reuse labels per the Label Taxonomy in rules/git-workflow.md (priority/P0..P2,
+# type/*, area/*). Create only what is missing, without --force: it overwrites an
+# existing label's color and description.
 
 # Create milestones per sprint, then issues per task
 ```

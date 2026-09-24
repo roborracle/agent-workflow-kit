@@ -39,7 +39,7 @@ CONFIDENCE: High | Medium | Low
 ```
 
 ## Rules
-- Be fast — haiku model, minimal turns
+- Be fast — keep turns minimal
 - Be precise — cite file paths, line numbers, URLs
 - Be honest — say "I don't know" rather than guess
 - Never modify files — read-only investigation

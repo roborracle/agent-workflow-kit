@@ -45,8 +45,10 @@ For every untracked piece of work, create an issue:
 ```bash
 gh issue create \
   --title "[TYPE] Description" \
-  --body "## Description\n[What was done]\n\n## Commits\n- SHA: [description]" \
-  --label "type/[TYPE]"
+  --body "$(printf '## Description\n[What was done]\n\n## Commits\n- SHA: [description]')" \
+  --label "type/[TYPE]" \
+  --label "priority/[P0|P1|P2]" \
+  --label "area/[AREA]"
 ```
 
 ### 3. Update Existing Issues

@@ -44,28 +44,14 @@ gh issue create \
 EOF
 )" \
   --label "type/[TYPE]" \
-  --label "priority/[PRIORITY]" \
+  --label "priority/[P0|P1|P2]" \
+  --label "area/[AREA]" \
   --milestone "[MILESTONE]"
 ```
 
 ## Issue Types
 
-| Type | Use For |
-|------|---------|
-| `feat` | New feature or enhancement |
-| `fix` | Bug fix |
-| `refactor` | Code improvement without behavior change |
-| `docs` | Documentation only |
-| `test` | Test coverage |
-| `chore` | Maintenance, dependencies |
-| `perf` | Performance improvement |
-
-## Priority Labels
-
-- `priority/critical` - Blocking release
-- `priority/high` - Important for sprint
-- `priority/medium` - Should do soon
-- `priority/low` - Nice to have
+Labels follow the taxonomy in `rules/git-workflow.md` § Label Taxonomy: every issue carries one `type/*` (`type/feature`, `type/bug`, `type/chore`, `type/refactor`, `type/docs`), one `priority/*` (`priority/P0` blocking, `priority/P1` high, `priority/P2` medium/low), and at least one `area/*`. Run `gh label list` and reuse what exists.
 
 ## Batch Issue Creation
 
@@ -76,16 +62,9 @@ When breaking down a feature into multiple issues:
 PARENT=$(gh issue create --title "[feat] Feature Name" --body "..." --label "type/epic")
 
 # Create child issues referencing parent
-gh issue create --title "[feat] Subtask 1" --body "Part of $PARENT\n\n..."
-gh issue create --title "[feat] Subtask 2" --body "Part of $PARENT\n\n..."
+gh issue create --title "[feat] Subtask 1" --body "$(printf 'Part of %s\n\n...' "$PARENT")"
+gh issue create --title "[feat] Subtask 2" --body "$(printf 'Part of %s\n\n...' "$PARENT")"
 ```
-
-## Decision Examples
-
-| User Request | Issues to Create |
-|-------------|-----------------|
-| "Add dark mode support" | 1. [feat] Add dark mode toggle (#1), 2. [feat] Create dark color palette (#2), 3. [feat] Update components (#3), 4. [test] Visual regression tests (#4), 5. [docs] Document theming (#5) |
-| "Fix login on Safari" | 1. [fix] Investigate Safari login failure (#10), 2. [fix] Implement Safari-compatible auth (#11), 3. [test] Add Safari to E2E matrix (#12) |
 
 ## Rules
 

@@ -1,7 +1,7 @@
 ---
 name: codebase-map
 description: Generate an architectural map of an unfamiliar codebase. Use when starting a new project, onboarding, or needing to understand an inherited codebase. Scans directory structure, dependencies, entry points, data flow, and key abstractions.
-tools: Read, Grep, Glob, Bash(tree *), Bash(wc *), Bash(git *), Bash(ls *), Bash(cat *)
+tools: Read, Grep, Glob, Bash(tree *), Bash(wc *), Bash(git log*), Bash(git show*), Bash(git diff*), Bash(git blame*), Bash(git ls-files*), Bash(ls *)
 disallowedTools: Write, Edit
 model: sonnet
 maxTurns: 50
@@ -101,7 +101,7 @@ src/
 ```
 
 ## Rules
-- Read broadly before concluding — scan at least 20 files across different directories
+- Read broadly enough across directories to support every claim in the map
 - Note inconsistencies (mixed patterns indicate organic growth or tech debt)
 - Identify the 3-5 most important files a new developer should read first
 - If the codebase is a monorepo, map each package/app separately

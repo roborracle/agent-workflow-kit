@@ -37,7 +37,7 @@ Before starting, classify the cleanup scope:
 5. Test
 
 ### Dead Code Removal
-1. `grep -rn "targetName" --include="*.{ts,tsx,js,jsx,py,php}" .`
+1. `grep -rn "targetName" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" --include="*.py" --include="*.php" .` (grep does not expand `{a,b}` braces inside `--include`)
 2. Check for reflection, dynamic dispatch, or string-based references
 3. Check test files — remove test coverage for dead code too
 4. Remove in a dedicated commit with clear message
@@ -49,4 +49,4 @@ Before starting, classify the cleanup scope:
 | Tests fail after one commit | `git revert HEAD` |
 | Tests fail after multiple commits | `git log --oneline`, find last green, `git revert HEAD~N..HEAD` |
 | Uncertain what broke | `git bisect start`, `git bisect bad`, `git bisect good <known-good>` |
-| Everything is broken | `git reset --hard origin/main` (last resort) |
+| Everything is broken | Last resort, and only after the user confirms: it discards all local commits and uncommitted work. Show `git status` and `git log origin/main..HEAD` first, then `git reset --hard origin/main` |

@@ -186,7 +186,7 @@ Add `context: fork` to run a skill in an isolated subagent context. The skill co
 - The skill needs context from the current conversation
 
 **Agent options:**
-- `Explore` -- Haiku, read-only. Best for research, file discovery, code search.
+- `Explore` -- Inherits the session model (capped at Opus on the Claude API), read-only. Best for research, file discovery, code search.
 - `Plan` -- Inherits model, read-only. Best for planning research.
 - `general-purpose` -- Inherits model, all tools. Best for complex multi-step tasks.
 - Any custom agent name from `.claude/agents/`.
@@ -250,14 +250,9 @@ Skills can bundle scripts that generate visual output (HTML, images, charts). Th
 
 The skill provides orchestration instructions while the bundled script does the heavy lifting. This pattern works for dependency graphs, test coverage reports, API docs, or any visual output.
 
-### Extended Thinking (Ultrathink)
+### Thinking Depth
 
-Claude Code supports an extended thinking mode. To activate it within a skill, include the word `ultrathink` anywhere in your skill content. Its presence alone activates extended thinking for that skill's execution.
-
-**When to use it:**
-- Complex analysis requiring weighing multiple factors
-- Architecture decisions with trade-offs
-- Debugging tasks where root cause analysis matters
+Current Claude models think by default, and on the newest ones thinking cannot be turned off. How much they think follows the session's effort level, not keywords or "think harder" prose in the skill, so leave thinking-steering words out of skill content. If a skill needs deep analysis (architecture trade-offs, root-cause debugging), say so in its opening line so the user can run it at a higher effort.
 
 ---
 
@@ -301,10 +296,10 @@ Syntax: `Skill(name)` for exact match, `Skill(name *)` for prefix match with any
 
 ### Claude doesn't see all skills
 
-Skill descriptions are loaded into context. If you have many skills, they may exceed the character budget (2% of context window, fallback 16,000 chars total across ALL skills).
+Descriptions of model-invocable skills share a listing budget in context, and each entry's `description` + `when_to_use` is truncated at 1,536 characters. When the listing overflows, some descriptions are dropped. The total budget and its override settings change between Claude Code releases, so check the current docs rather than a number written here.
 
-- Check: Run `/context` to see if skills are being excluded.
-- Fix: Keep descriptions concise and keyword-rich. Override with `SLASH_COMMAND_TOOL_CHAR_BUDGET` env var if needed.
+- Check: the Skills row in `/context` shows the listing size after the budget is applied.
+- Fix: put the key use case first, keep descriptions concise, and set `disable-model-invocation: true` on manual-only skills (their descriptions are not loaded into context).
 
 ### Subagent skill returns nothing useful
 

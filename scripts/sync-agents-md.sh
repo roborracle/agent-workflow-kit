@@ -49,8 +49,8 @@ This file is for assistants that read a single instruction file: Codex, Gemini C
 most others. It contains the same standards Claude Code loads from \`CLAUDE.md\` plus \`rules/\`,
 with every rule inlined because there is no on-demand loading here.
 
-If you are Claude Code, read \`CLAUDE.md\` instead — it is shorter and the rules load only when
-relevant.
+If you are Claude Code, read \`CLAUDE.md\` instead — Claude Code loads \`rules/\` alongside it,
+so the inlined copy below is redundant there.
 
 ---
 

@@ -10,11 +10,11 @@ Create distinctive, production-grade frontend interfaces that avoid generic "AI 
 
 ## Design Thinking
 
-Before coding, commit to a BOLD aesthetic direction:
+Before coding, commit to one clear aesthetic direction:
 - **Purpose**: What problem does this solve? Who uses it?
 - **Tone**: Pick an extreme - brutally minimal, maximalist chaos, retro-futuristic, organic/natural, luxury/refined, playful, editorial, brutalist, art deco, soft/pastel, industrial
 - **Constraints**: Framework, performance, accessibility requirements
-- **Differentiation**: What makes this UNFORGETTABLE?
+- **Differentiation**: What will make this memorable for this audience?
 
 ## Frontend Aesthetics Guidelines
 
@@ -42,26 +42,18 @@ Before coding, commit to a BOLD aesthetic direction:
 - Gradient meshes, noise textures, geometric patterns
 - Layered transparencies, dramatic shadows, decorative borders
 
-## Tailwind CSS Enforcement
+## Styling System
 
-**MANDATORY**: Use ONLY Tailwind utility classes for styling.
+Use the styling system named in the project's CLAUDE.md. In Tailwind projects, style with utility classes rather than inline `style` props or CSS-in-JS, so every value stays on the design-token scale:
 
 ```tsx
-// ✅ CORRECT
 <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
-
-// ❌ FORBIDDEN - Inline styles
-<div style={{ padding: '16px' }}>
-
-// ❌ FORBIDDEN - CSS-in-JS
-const StyledDiv = styled.div`padding: 16px;`
 ```
 
 ## Performance Targets
 ```yaml
 Core Web Vitals:
   LCP: < 2.5s
-  FID: < 100ms
   CLS: < 0.1
   INP: < 200ms
 Bundle: Initial JS < 100KB gzipped
@@ -74,11 +66,16 @@ Runtime: 60fps animations
 - Keyboard navigation
 - Color contrast validation (4.5:1)
 
-## NEVER Use
+## Defaults to Avoid
 - Generic fonts (Inter, Roboto, Arial, system fonts)
 - Cliched color schemes (purple gradients on white)
-- Predictable layouts and component patterns
-- Cookie-cutter design lacking context-specific character
+- Cream or off-white page backgrounds as the default canvas
+- Italic accent words inside headlines
+- Numbered "01 / 02 / 03" section labels
+- Monospace eyebrow labels
+- Pill-shaped buttons as the default button shape
+
+When a first draft lands on one of these anyway, add the specific pattern it used to this list rather than a general "less generic" note.
 
 ## Additional Resources
 

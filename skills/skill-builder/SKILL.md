@@ -50,10 +50,10 @@ Ask questions using AskUserQuestion, one round at a time. Each round covers one 
 - Should it be user-only (`/slash-command`), Claude-auto-invocable, or both?
 - Does it accept arguments? If so, what? (e.g., a topic, a URL, a file path)
 
-**Round 3: Step-by-Step Process**
-*Why this matters: Claude follows instructions literally. Vague steps produce vague results. Specific steps produce consistent output every time.*
+**Round 3: Process and Fragility**
+*Why this matters: Claude follows instructions literally, so specificity should match fragility. Where only one sequence is safe (destructive commands, deploys, output a parser reads), exact steps prevent mistakes. For judgment work, a hand-written script over-constrains the model and usually does worse than its own plan.*
 
-- Walk me through exactly what should happen from trigger to output. What's step 1? Step 2? Keep going.
+- What should happen from trigger to output? Which parts must happen in a fixed order, and which are judgment calls where the goal and a way to verify the result are enough?
 - For each step: Does Claude do it directly, or delegate to a subagent/script?
 - Does this need to be conversational (back-and-forth with the user) or is it a fire-and-forget task?
 
@@ -114,7 +114,7 @@ Once discovery is complete, build the skill following these steps:
 Set these fields based on what you learned in discovery:
 
 - `name` -- Matches the directory name. Lowercase, hyphens, max 64 chars.
-- `description` -- Written as: "[What it does] ([trigger keyword 1], [trigger keyword 2], [trigger keyword 3])." Include natural keywords from the trigger phrases.
+- `description` -- What the skill does and when to use it, named as categories of intent ("Use when ending or pausing a working session") rather than a list of example phrases.
 - `disable-model-invocation: true` -- Set if the skill has side effects (file generation, API calls, costs money). Prevents Claude from auto-invoking.
 - `argument-hint` -- Set if the skill accepts arguments. Shows in the `/` menu autocomplete.
 - `context: fork` + `agent` -- Set if the skill is self-contained and doesn't need conversation history.
@@ -129,9 +129,9 @@ For the full field reference and invocation control matrix, see [reference.md](r
 
 Structure task skills as:
 1. **Context** -- Files to read, APIs to call, reference material to load
-2. **Step-by-step workflow** -- Numbered steps. Each step tells Claude exactly what to do.
+2. **Workflow** -- The goal, the constraints, and how to verify the result. Use exact numbered steps only where order or safety demands it (destructive commands, deploys, schema-matched output); state judgment steps as outcomes.
 3. **Output format** -- What the result looks like. Include templates, file paths, structured formats.
-4. **Notes** -- Edge cases, constraints, what to delegate, what NOT to do.
+4. **Notes** -- Edge cases and constraints, each with the reason behind it; what to delegate.
 
 Content rules:
 - Keep SKILL.md under 500 lines. Move detailed reference material to supporting files.
@@ -156,7 +156,7 @@ After creating a skill, add it to `~/.claude/skills/INDEX.md` (for global skills
 Test both invocation methods:
 
 1. **Natural language** -- Say something matching the description. Does Claude load the skill?
-   - If not, revise the `description` field to include the keywords you used
+   - If not, broaden the intent the `description` names; don't append the exact phrase you typed
    - Try 2-3 different phrasings to verify it triggers reliably
 2. **Direct invocation** -- Run `/skill-name` with test arguments
    - Verify `$ARGUMENTS` / `$N` are substituting correctly
@@ -175,7 +175,7 @@ Here's a minimal but complete skill as a starting template:
 ```yaml
 ---
 name: meeting-notes
-description: Summarize meeting notes into structured minutes with action items (recap meeting, format minutes, meeting summary).
+description: Summarize raw meeting notes into structured minutes with decisions and action items. Use when the user shares meeting notes or asks for minutes.
 argument-hint: [topic or date]
 ---
 
@@ -211,7 +211,7 @@ Use this checklist to audit any existing skill. Read the skill file first before
 ### Frontmatter Audit
 
 - [ ] `name` matches the directory name
-- [ ] `description` includes natural trigger keywords in parenthetical format
+- [ ] `description` names what the skill does and the situations it applies to
 - [ ] `description` is specific enough to avoid false triggers but broad enough to catch real requests
 - [ ] `disable-model-invocation: true` is set if the skill has side effects
 - [ ] `argument-hint` is set if the skill accepts arguments
@@ -222,11 +222,11 @@ Use this checklist to audit any existing skill. Read the skill file first before
 ### Content Audit
 
 - [ ] Total SKILL.md is under 500 lines (detailed reference moved to supporting files)
-- [ ] Clear step-by-step workflow with numbered steps (for task skills)
+- [ ] Specificity matches fragility: exact steps for fixed-order or destructive operations, goals plus verification for judgment work
 - [ ] Output format is specified with templates or examples
 - [ ] All file paths and locations are documented
 - [ ] Agent delegation instructions include the actual prompt text
-- [ ] No vague instructions -- every step tells Claude exactly what to do
+- [ ] Every instruction is concrete about the outcome it wants, without scripting judgment calls
 - [ ] String substitutions (`$ARGUMENTS`, `$N`) are used where the skill takes input
 - [ ] No duplication with global rules or other skills
 
@@ -238,10 +238,11 @@ Use this checklist to audit any existing skill. Read the skill file first before
 
 ### Quality Audit
 
-- [ ] A beginner could follow the instructions without prior context
+- [ ] Carries what the model can't infer (paths, conventions, quality bar, reasons behind constraints) and skips general how-to it already knows
 - [ ] Instructions are actionable, not abstract
 - [ ] Delegates to subagents when appropriate to keep main context clean
 - [ ] Output paths follow a predictable convention
+- [ ] Emphasis (caps, MUST/NEVER/CRITICAL) is reserved for an instruction shown to be underweighted, and each prohibition states its reason
 
 After auditing, check [reference.md](reference.md) for advanced features that could improve the skill.
 

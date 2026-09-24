@@ -5,7 +5,7 @@ description: Web development standards for HTML structure, CSS organization, Jav
 
 # Web Development Fundamentals
 
-Use this skill for any frontend or full-stack web work. The rules below were previously always-loaded as `rules/web-dev-fundamentals.md` — they now load only when the skill is active, since they're irrelevant on backend-only or non-web work.
+Use this skill for any frontend or full-stack web work.
 
 ## HTML Structure
 

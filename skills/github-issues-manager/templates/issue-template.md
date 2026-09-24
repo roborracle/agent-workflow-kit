@@ -22,13 +22,14 @@ gh issue create \
 EOF
 )" \
   --label "type/[TYPE]" \
-  --label "priority/[PRIORITY]"
+  --label "priority/[P0|P1|P2]" \
+  --label "area/[AREA]"
 ```
 
 ## Epic/Parent Issue
 ```bash
 PARENT=$(gh issue create --title "[feat] Epic: Feature Name" \
-  --body "## Overview\n[Feature description]\n\n## Child Issues\n[Will be linked below]" \
+  --body "$(printf '## Overview\n[Feature description]\n\n## Child Issues\n[Will be linked below]')" \
   --label "type/epic")
 
 # Create child issues referencing parent
@@ -59,6 +60,7 @@ gh issue create \
 - Version:
 EOF
 )" \
-  --label "type/fix" \
-  --label "priority/high"
+  --label "type/bug" \
+  --label "priority/P1" \
+  --label "area/[AREA]"
 ```

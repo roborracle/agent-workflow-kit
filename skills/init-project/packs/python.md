@@ -1,26 +1,28 @@
+---
 description: Python type hints, naming, docstrings, and async patterns.
-globs: ["**/*.py"]
-alwaysApply: false
+paths:
+  - "**/*.py"
+---
 
 # Python Conventions
 
 ## Type Hints (Required)
 
-Always use type hints for function parameters and return values.
+Always use type hints for function parameters and return values. Use built-in generics and `X | None` (Python 3.10+).
 
 ```python
-from typing import Optional, List, Dict, Tuple
+from typing import Any
 
 async def process_data(
     payload: bytes,
     session_id: str,
-    language: Optional[str] = None
-) -> Tuple[bytes, Dict[str, Any]]:
+    language: str | None = None
+) -> tuple[bytes, dict[str, Any]]:
     """Process data through the pipeline."""
     pass
 ```
 
-- Prefer `Optional[T]` over `Union[T, None]`
+- Prefer `T | None` over `Optional[T]` and `Union[T, None]`; keep `Optional[T]` only in projects pinned below Python 3.10
 - Use Pydantic models for data structures
 - Pydantic models use PascalCase with `Schema` suffix (e.g., `UserSchema`)
 

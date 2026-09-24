@@ -73,13 +73,9 @@ See [reference/db-patterns.md](reference/db-patterns.md) for index examples (sim
 - Secrets management
 
 ## Performance Targets
+API and database latency targets come from `rules/testing-quality.md` unless the project's `CLAUDE.md` overrides them. Design-level targets beyond those:
 ```yaml
-API Response Times:
-  p50: < 100ms
-  p95: < 500ms
-  p99: < 1000ms
 Availability: 99.9%
-Database Query: < 50ms average
 Cache Hit Rate: > 90%
 ```
 

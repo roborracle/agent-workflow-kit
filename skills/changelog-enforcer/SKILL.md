@@ -1,6 +1,6 @@
 ---
 name: changelog-enforcer
-description: Ensure mandatory changelog updates accompany every code change. Use to maintain CHANGELOG.md with proper formatting, track user-facing changes, and document releases.
+description: Ensure user-facing changes are recorded in CHANGELOG.md. Use to maintain CHANGELOG.md with proper formatting, track user-facing changes, and document releases.
 argument-hint: [version-or-period]
 disable-model-invocation: true
 allowed-tools: Read, Edit, Bash(git *), Bash(gh *), Grep, Glob
